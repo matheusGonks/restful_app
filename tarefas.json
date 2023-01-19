@@ -1,0 +1,9 @@
+[
+    {"identificador" : 1, "descricao" : "Fazer o trabalho de Sistemas Distribuídos", "prazo" : "2022-12-15T12:00:00Z", "completa" : false},
+    {"identificador" : 2, "descricao" : "Fazer o fichamento de CTS", "prazo" : "2022-12-19T12:00:00Z", "completa" : true},
+    {"identificador" : 3, "descricao" : "Fazer o projeto final de COmputação Gráfica", "prazo" : "2022-09-21T12:00:00Z", "completa" : true},
+    {"identificador" : 4, "descricao" : "Estudar frameworks de javascript ( vue, react, angular )", "prazo" : "2024-01-01T12:00:00Z", "completa" : false},
+    {"identificador" : 5, "descricao" : "Comprar um aspirador de ṕó", "prazo" : "2023-20-02T12:00:00Z", "completa" : false},
+    {"identificador" : 6, "descricao" : "Fazer a lista de introdução à lógica", "prazo" : "2023-02-01T12:00:00Z", "completa" : false},
+    {"identificador" : 7, "descricao" : "Fazer a atividade avaliativa de Educação", "prazo" : "2023-02-01T12:00:00Z", "completa" : true}
+]

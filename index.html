@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+    
+        <h1>Gerenciador de tarefas</h1>
+        <p id="erros"></p>
+
+        <div id="tabela" style="display: none;">
+            <h3>Lista de Tarefas</h3>
+            <table class="tarefas"> </table>
+        </div>    
+
+        <div id="formulario" style="display: none;">
+            <form name='myForm' onsubmit="return submitReq(event.submitter.value)">
+                <h1>Criar ou Alterar</h1>
+                
+                <label for="descricao"><b>Descricao</b></label>
+                <input type="text" placeholder="Descricao" name="descricao" required>
+                
+                <label for="prazo"><b>Prazo </b></label>
+                <div style="display: flexbox; ">
+                    <input type="date"  placeholder="Data" name="prazo" required>
+                    <input style="flex: 1" type="time" placeholder="Horario" name="horario" required>
+                </div>
+
+                <div style="margin: 10px 10px 50px">
+                    <label for="completa"><b>Tarefa foi completa</b></label>
+                    <input type="radio" name="completa" value='true' required style="display: inline;">Sim</input>
+                    <input type="radio" name="completa" value='' required style="display: inline;">Não</input>
+                </div>
+
+                <button type="submit" class="btn" value="put">PUT</button>
+                <button type="submit" class="btn" value="post">POST</button>
+                <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+            </form>
+        </div>
+
+        <div class="opcoes">
+            <button onclick="getRequest()">GET!</button>
+            <button onclick="openForm(postRequest)">POST</button>
+            <button onclick="openForm(putRequest)">PUT</button>
+            <button onclick="deleteRequest()" >DELETE</button>    
+        </div>
+    
+    </div>
+</body>
+<style>
+
+    
+    .main{
+        text-align: center;
+        margin: auto;
+        width: 40%;
+    }
+
+    #tabela{
+        width: 100%;
+        margin: auto;
+    }
+
+    .tarefas{
+        width:100%;
+    }
+
+    .tarefas, th, td{
+        border: 1px solid black;
+        border-collapse: collapse;
+        margin: auto;
+        margin-bottom: 5em;
+        text-align: left;
+    }
+
+    .tarefas th, .tarefas td{
+        padding: 5px;
+    }
+
+    #formulario{
+        width: 50%;
+        margin: auto;
+        border: 0.5px solid black;
+        border-radius: 10px;
+        padding: 40px 10px 40px;
+    }
+
+    #formulario input[type=text]{
+        text-align: left;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+    #formulario input[type=date], .formulario input[type=time]{
+        text-align: left;
+        padding: 5px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+
+    .opcoes{
+        margin: 3em;
+    }
+    
+</style>
+<script src="cliente.js"></script>
+<script>
+    function openForm(){
+        document.getElementById("formulario").style.display = "block";
+    }
+
+    function closeForm(){ document.getElementById("formulario").style.display = "none"; };
+
+    function openTable(){ 
+        document.getElementById("tabela").style.display = "block";
+        closeForm();
+    };
+
+    function closeTable(){ document.getElementById("tabela").style.display = "none";};
+
+    function processarValores(tipoRequisicao){
+        const id = progressaoID;
+        const des = document.forms["myForm"]["descricao"].value;
+        const data = document.forms["myForm"]["prazo"].value;
+        const horario = document.forms["myForm"]["horario"].value;
+        const comp = Boolean(document.forms["myForm"]["completa"].value) ;
+
+        const dataProcessada = `${data}T${horario}:00Z`;
+
+        const novaTarefa = { identificador : id, descricao : des, prazo : dataProcessada, completa : comp};
+        tipoRequisicao(novaTarefa);
+    }
+
+    function submitReq(tipoReq){
+        switch(tipoReq){
+            case 'put': processarValores(putRequest); break;
+            case 'post': processarValores(postRequest); break;
+        }
+
+        return false;
+    }
+
+    var form = document.getElementsByName("myForm");
+    function handleForm(event) { event.preventDefault(); } ;
+    form[0].addEventListener('submit', handleForm);
+
+</script>
+</html>
