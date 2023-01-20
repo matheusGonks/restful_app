@@ -125,7 +125,6 @@
     function closeTable(){ document.getElementById("tabela").style.display = "none";};
 
     function processarValores(tipoRequisicao){
-        const id = progressaoID;
         const des = document.forms["myForm"]["descricao"].value;
         const data = document.forms["myForm"]["prazo"].value;
         const horario = document.forms["myForm"]["horario"].value;
@@ -133,7 +132,7 @@
 
         const dataProcessada = `${data}T${horario}:00Z`;
 
-        const novaTarefa = { identificador : id, descricao : des, prazo : dataProcessada, completa : comp};
+        const novaTarefa = { descricao : des, prazo : dataProcessada, completa : comp};
         tipoRequisicao(novaTarefa);
     }
 

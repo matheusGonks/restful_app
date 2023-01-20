@@ -1,8 +1,18 @@
-const express = require('express')
-//const mongoose = require('mongoose')
+const express = require('express');
+const fs = require('fs');
+let tasks, idAtual;
+
+fs.readFile('tarefas.json', 'utf8', function readFileCallback(err, data){
+    if (err){
+        console.log(err);
+    } else {
+        tasks = JSON.parse(data);
+        idAtual = tasks.length + 1;
+
+}});
+
 
 const app = express();
-let tasks = require('./tarefas.json');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -31,28 +41,41 @@ app.get("/tasks/:id", (req, res) => {
 })
 
 app.post("/tasks", (req, res) => {
-    const task = req.body;
+    let task = req.body;
+    task = { identificador : idAtual, ...task };
     tasks.push(task);
+    idAtual++;
+
+    const tasksJSON = JSON.stringify(tasks);
+    fs.writeFile('tarefas.json', tasksJSON , 'utf-8' , (err) => { if (err) throw err }  );
+
     res.json(task);
 });
 
 app.delete("/tasks/:id", (req, res) => {
     const id = req.params.id;
     tasks = tasks.filter((task) => task.identificador != id );
+
+    const tasksJSON = JSON.stringify(tasks);
+    fs.writeFile('tarefas.json', tasksJSON , 'utf-8' , (err) => { if (err) throw err } );
     
     res.json('Removido');
 });
 
 app.put("/tasks/:id", (req, res) => {
-    const id = req.params.id;
-    const task = tasks.find((task) => task.identificador == id);
+    let id = req.params.id;
+    let taskAlterada = tasks.find((task) => task.identificador == id);
+    
+    if(!taskAlterada) return res.status(404).json({status: 'erro', message: "identificador invalido"});
+    
+    let novoCorpo = req.body; novoCorpo = { identificador : id, ...novoCorpo}; 
+    let posicao = tasks.indexOf(taskAlterada);;
+    tasks[ posicao ] = novoCorpo;
 
-    if(!task) return res.status(404).json({status: 'erro', message: "identificador invalido"});
+    const tasksJSON = JSON.stringify(tasks);
+    fs.writeFile('tarefas.json', tasksJSON , 'utf-8' , (err) => { if (err) throw err } );
     
-    positionOfTaskToBeChanged = tasks.indexOf(task);
-    tasks[ positionOfTaskToBeChanged ] = req.body
-    
-    res.json(task[positionOfTaskToBeChanged]);
+    res.json(tasks[ posicao ]);
 }); 
 
 

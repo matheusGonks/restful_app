@@ -1,14 +1,13 @@
 //API: https://localhost:3000
 let tabela = document.querySelector('.tarefas');
-let progressaoID = 1;
-
+const endereco = 'http://localhost:3000/tasks/';
 
 //get
 function getRequest(){
 
     const idTarefa = prompt("Qual tarefa você está buscando?");
 
-    fetch('http://localhost:3000/tasks/' + idTarefa)
+    fetch(endereco + idTarefa)
     .then(res => {
         if(!res.ok){
             console.log("GET request unsuccessful");
@@ -22,7 +21,7 @@ function getRequest(){
 
         let minhasTarefas = [];
         minhasTarefas = minhasTarefas.concat(listaDeTarefas);
-        progressaoID = minhasTarefas.length;
+        progressaoID = minhasTarefas.length + 1;
 
         tabela.innerHTML = " <tr>" +
                                 "<th>Id</th>" +
@@ -53,7 +52,7 @@ function getRequest(){
 
 //post
 function postRequest(novaTarefa){   
-    fetch('http://localhost:3000/tasks', {
+    fetch(endereco, {
         method: "POST",
         headers: {
             'Content-type' : 'application/json',
@@ -67,14 +66,13 @@ function postRequest(novaTarefa){
     })
     .catch(error => console.log(error));
 
-    progressaoID++;
 }
 
 //delete
 function deleteRequest(novaVersaoDeTarefa){
     const idTarefaADeletear = prompt("Qual tarefa você está deletando?");
 
-    fetch('http://localhost:3000/tasks/' + idTarefaADeletear, {
+    fetch(endereco + idTarefaADeletear, {
         method: "DELETE",
         headers: {
             'Content-type' : 'application/json',
@@ -86,15 +84,13 @@ function deleteRequest(novaVersaoDeTarefa){
         alert("A tarefa foi removida");
     })
     .catch(error => console.log(error));
-
-    progressaoID--;
 }
 
 //put
-function putRequest(){
+function putRequest(novaVersaoDeTarefa){
     const idTarefaAAlterar = prompt("Qual tarefa você está alterando?");
     
-    fetch('http://localhost:3000/tasks/' + idTarefaAAlterar, {
+    fetch(endereco + idTarefaAAlterar, {
         method: "PUT",
         headers: {
             'Content-type' : 'application/json',
